@@ -1,0 +1,9 @@
+- Ler código de rastreio e nome de um produto.
+- Salvar código no localStorage.
+- Ao carregar página ver dados do localStorage.
+- Listar card com Nome e código do produto e ultimo local.
+- Ao clicar no card listar as informações completas do produto.
+- Adicionar para remover o produto
+- Validar em caso de erro
+- Rastrear ao adicionar
+- Adicionar opção para remover
