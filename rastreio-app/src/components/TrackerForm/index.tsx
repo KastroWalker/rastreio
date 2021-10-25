@@ -1,4 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from "react";
+import { trackPackage } from "../../clients/Tracking";
 import { Package } from "../../types/Package";
 import { Button, Form, Input, Label, Title } from "./style";
 
@@ -32,6 +33,10 @@ const TrackerForm = (props: TrackerFormProps) => {
     return !invalidValues;
   };
 
+  const fetchTracksEvents = async (newPackage: Package) => {
+    return await trackPackage(newPackage.code).then((data) => data);
+  };
+
   const savePackageInfoInLocalStorage = (newPackage: Package) => {
     if (packages.length > 0) {
       const packageExist =
@@ -43,7 +48,7 @@ const TrackerForm = (props: TrackerFormProps) => {
         setPackages([...packages, newPackage]);
         localStorage.setItem(
           "packages",
-          JSON.stringify([...packages, newPackage])
+          JSON.stringify([...packages, newPackage].reverse())
         );
       }
     } else {
@@ -52,7 +57,7 @@ const TrackerForm = (props: TrackerFormProps) => {
     }
   };
 
-  const submitForm = (event: FormEvent<HTMLFormElement>) => {
+  const submitForm = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     setErroMessage("");
@@ -63,7 +68,11 @@ const TrackerForm = (props: TrackerFormProps) => {
         name: namePackage,
       };
 
-      savePackageInfoInLocalStorage(newPackage);
+      const trackEvents = await fetchTracksEvents(newPackage);
+
+      if (trackEvents) {
+        savePackageInfoInLocalStorage({ ...newPackage, trackEvents });
+      }
     }
   };
 

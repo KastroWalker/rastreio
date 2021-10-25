@@ -1,106 +1,21 @@
 import { useEffect, useState } from "react";
 import TrackerForm from "./components/TrackerForm";
 import { Package } from "./types/Package";
-import styled, { keyframes } from "styled-components";
 import PackageCard from "./components/PackageCard";
 import { trackPackage } from "./clients/Tracking";
-
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 80%;
-  margin: auto;
-`;
-
-const ErroMessage = styled.div`
-  padding: 20px;
-  background-color: #f44336;
-  color: #fff;
-  opacity: 0.83;
-  margin-bottom: 15px;
-  width: 100%;
-  border-radius: 10px;
-  margin: 10px;
-`;
-
-const Header = styled.header`
-  background-color: #ffe600;
-  display: flex;
-  justify-content: center;
-`;
-
-const Title = styled.h1`
-  color: #00416b;
-`;
-
-const Footer = styled.footer`
-  color: #00416b;
-`;
-
-const FooterText = styled.p`
-  color: #00416b;
-  display: flex;
-  justify-content: center;
-`;
-
-const LinkFooter = styled.a`
-  color: #00416b;
-  text-decoration: none;
-  font-weight: bold;
-
-  &:visited {
-    color: #00416b;
-  }
-`;
-
-const AnimationLoader = keyframes`
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-`;
-
-const Loader = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 65px;
-  height: 65px;
-
-  &:after {
-    content: " ";
-    display: block;
-    width: 34px;
-    height: 34px;
-    /* margin: 8px; */
-    border-radius: 50%;
-    border: 4px solid #00416b;
-    border-color: #00416b transparent #00416b transparent;
-    animation-name: ${AnimationLoader};
-    animation-duration: 1.2s;
-    animation-iteration-count: infinite;
-  }
-`;
-
-const PackageCardsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-`;
-
-const FetchingDataContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const MessageFetchingData = styled.p`
-  color: #00416b;
-`;
+import {
+  Header,
+  Title,
+  Main,
+  ErroMessage,
+  FetchingDataContainer,
+  MessageFetchingData,
+  Loader,
+  PackageCardsContainer,
+  Footer,
+  FooterText,
+  LinkFooter,
+} from "./styles/style";
 
 const App = () => {
   const [packages, setPackages] = useState<Array<Package>>([]);
@@ -119,7 +34,7 @@ const App = () => {
           await trackPackage(pkg.code)
             .then((data) => {
               const tracks = data;
-              const packageTracked: Package = { ...pkg, tracksEvent: tracks };
+              const packageTracked: Package = { ...pkg, trackEvents: tracks };
               packagesTracked.push(packageTracked);
             })
             .catch(() => {
@@ -161,7 +76,7 @@ const App = () => {
                 name={pkg.name}
                 code={pkg.code}
                 lastInfo={
-                  pkg.tracksEvent![0].description ?? "Erro ao buscar status"
+                  pkg.trackEvents![0].description ?? "Erro ao buscar status"
                 }
               />
             ))}
