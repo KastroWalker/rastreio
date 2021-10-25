@@ -4,3 +4,4 @@
 - Validar em caso de erro
 - Rastrear ao adicionar
 - Listar por novos primeiros, antigos primeiros.
+- Loader ao inserir novo pacote
